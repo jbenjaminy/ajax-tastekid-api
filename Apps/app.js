@@ -11,11 +11,9 @@ $('form').submit(function(event) {
     var userInput = $('#tastekid').val();
     bookSearch(userInput);
         //$('#tastekid')[0].reset();
-        console.log(userInput, '<-- userInput');
 });
 
     function bookSearch(userInput) {
-        console.log(userInput);
         $.ajax({
             method: "GET",
             url: "//www.tastekid.com/api/similar?",
@@ -28,10 +26,28 @@ $('form').submit(function(event) {
             }
         })
         .done(function(response){
-            console.log(response);
+            getWikiLink(response);
+            printToPage(response);
         });
     }
 
+function getWikiLink(response) {
+    $.each(response.Similar.Results, function(index, value) {
+    var wikiLink = value.wUrl;
+    wikiApiCall(wikiLink);
+    }
+}
 
+function wikiApiCall(wikiLink) {
+
+}
+
+ function printToPage(response) {
+    // $('.thumbnails .row').empty();
+    console.log(response.Similar.Results);
+    $.each(response.Similar.Results, function(index, value) {
+      $('.thumbnails .row').append('<div class="col-xs-6 col-md-3"><a href="' + value.wUrl + '" class="thumbnail"><img src="" alt="' + value.Name + '"></a></div>');
+    });
+  }
 
 });
