@@ -1,23 +1,31 @@
-// http://api.eventful.com/rest/events/search?...&where=32.746682,-117.162741&within=25
-// // eventful key: NPmvmGSRSN5FwHF5
+//taste kid key: 229060-APIProj-SGUZVY4W
+//endpoint:
+//https://www.tastekid.com/api/similar?q=red+hot+chili+peppers%2C+pulp+fiction
+
+
 
 $(function() {
 
 $('form').submit(function(event) {
     event.preventDefault();
-    var eventSearch = $('#song-kick').val();
-    songKickSearch(eventSearch);
-        // $('#song-kick')[0].reset();
-        console.log(eventSearch, '<-- eventSearch');
-
+    var userInput = $('#tastekid').val();
+    bookSearch(userInput);
+        //$('#tastekid')[0].reset();
+        console.log(userInput, '<-- userInput');
 });
 
-    function songKickSearch(eventSearch) {
-        console.log(eventSearch);
+    function bookSearch(userInput) {
+        console.log(userInput);
         $.ajax({
-            method: "GET http://eventful.com/oauth/authorize?oauth_token=NPmvmGSRSN5FwHF5",
-            url: "//api.eventful.com/json/events/search?q=music&location=" + eventSearch + "&date=Future&within=25",
-            dataType: "json",
+            method: "GET",
+            url: "//www.tastekid.com/api/similar?",
+            dataType: "jsonp",
+            data: {
+                q: userInput,
+                type: "books",
+                k: "229060-APIProj-SGUZVY4W",
+                info: 1
+            }
         })
         .done(function(response){
             console.log(response);

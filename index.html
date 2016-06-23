@@ -8,19 +8,13 @@
 </head>
 
 <body>
-    <h1>Search for live music in your area</h1>
+    <h1>Get a book recommendation based on your interests</h1>
     <div class="container">
         <div>
-            <div class="results">
-                <div class="thumbnails center-block">
-                    <div class="row">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 concert-search">
-                <form id="song-kick" role="search">
+            <div class="col-lg-6 book-search">
+                <form role="search">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Checkout live music in your area">
+                        <input type="text" class="form-control" placeholder="Enter your interests" id="tastekid">
                         <span class="input-group-btn">
         <button class="btn btn-default" type="button">Go!</button>
       </span>
@@ -30,8 +24,13 @@
             </div>
             <!-- /.col-lg-6 -->
         </div>
-        <div class="embedded-map"></div>
         <!-- /.row -->
+        <div class="results">
+            <div class="thumbnails center-block">
+                <div class="row">
+                </div>
+            </div>
+        </div>
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="Apps/app.js" type="text/javascript"></script>
