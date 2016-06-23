@@ -1,12 +1,5 @@
-//taste kid key: 229060-APIProj-SGUZVY4W
-//endpoint:
-//https://www.tastekid.com/api/similar?q=red+hot+chili+peppers%2C+pulp+fiction
-
-
-
 $(function() {
 
-// var wikiLink = ""
 
 $('form').submit(function(event) {
     event.preventDefault();
@@ -27,40 +20,50 @@ $('form').submit(function(event) {
                 info: 1
             }
         })
-        .done(function(response){
-            printToPage(response);
-            // getWikiLink(response);
+        .done(function(bookResponse){
+            getWikiString(bookResponse);
+
         });
     }
 
-// function getWikiLink(response) {
-//     $.each(response.Similar.Results, function(index, value) {
-//     wikiLink = value.wUrl;
-//     wikiApiCall(wikiLink);
-//     }
-// )}
+function getWikiString(bookResponse) {
+    $.each(bookResponse.Similar.Results, function(index, value) {
+        var wikiString = value.wUrl.substring(value.wUrl.indexOf("wiki/"));
+        wikiString = wikiString.substring(5);
+        console.log(wikiString);
 
-// function wikiApiCall(response, wikiLink) {
-//     var wikiString = wikiLink.substring(29);
-//     if (wikiString[0] === "/") {
-//         newString = wikiString.substring(1);
-//     }
-//     else { 
-//         newString = wikiString;
-//     }
-//     console.log(newString);
+        wikiApiCall(bookResponse, wikiString) 
+    }
+)}
 
-//     // printToPage(response, wikiImage);
+function wikiApiCall(bookResponse, wikiString) {
+        $.ajax({
+            method: "GET",
+            url: "https://en.wikipedia.org/w/api.php?",
+            format: "json",
+            data: {
+                action: "query",
+                titles: wikiString  
+            }
+        })
+        .done(function(wikiResponse){
+            console.log(wikiResponse)
 
-// }
+        // printToPage(bookResponse, wikiImage);
+
+        });
 
 
- function printToPage(response) {
-    $('.thumbnails .row').empty();
-    $.each(response.Similar.Results, function(index, value) {
-      $('.thumbnails .row').append('<div class="col-xs-6 col-md-3"><a href="' + value.wUrl + '" class="thumbnail"><img src="" alt="' + value.Name + '"></a></div>');
-      // append wikiThumbnails into src
-    });
-  }
+
+    }      
+
+ // function printToPage(response) {
+ //    $('.thumbnails .row').empty();
+
+ //    $.each(response.Similar.Results, function(index, value) {
+ //      $('.thumbnails .row').append('<div class="col-xs-6 col-md-3"><a href="' + value.wUrl + '" class="thumbnail"><img src="" alt="' + value.Name + '"></a></div>');
+ //      // append wikiThumbnails into src
+ //    });
+ //  }
 
 });
