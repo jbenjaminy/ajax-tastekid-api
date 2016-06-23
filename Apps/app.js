@@ -6,16 +6,16 @@
 
 $(function() {
 
+// var wikiLink = ""
+
 $('form').submit(function(event) {
     event.preventDefault();
     var userInput = $('#tastekid').val();
     bookSearch(userInput);
-        //$('#tastekid')[0].reset();
-        console.log(userInput, '<-- userInput');
+        $('form')[0].reset();
 });
 
     function bookSearch(userInput) {
-        console.log(userInput);
         $.ajax({
             method: "GET",
             url: "//www.tastekid.com/api/similar?",
@@ -28,10 +28,39 @@ $('form').submit(function(event) {
             }
         })
         .done(function(response){
-            console.log(response);
+            printToPage(response);
+            // getWikiLink(response);
         });
     }
 
+// function getWikiLink(response) {
+//     $.each(response.Similar.Results, function(index, value) {
+//     wikiLink = value.wUrl;
+//     wikiApiCall(wikiLink);
+//     }
+// )}
 
+// function wikiApiCall(response, wikiLink) {
+//     var wikiString = wikiLink.substring(29);
+//     if (wikiString[0] === "/") {
+//         newString = wikiString.substring(1);
+//     }
+//     else { 
+//         newString = wikiString;
+//     }
+//     console.log(newString);
+
+//     // printToPage(response, wikiImage);
+
+// }
+
+
+ function printToPage(response) {
+    $('.thumbnails .row').empty();
+    $.each(response.Similar.Results, function(index, value) {
+      $('.thumbnails .row').append('<div class="col-xs-6 col-md-3"><a href="' + value.wUrl + '" class="thumbnail"><img src="" alt="' + value.Name + '"></a></div>');
+      // append wikiThumbnails into src
+    });
+  }
 
 });
