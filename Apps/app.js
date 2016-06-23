@@ -2,8 +2,6 @@
 //endpoint:
 //https://www.tastekid.com/api/similar?q=red+hot+chili+peppers%2C+pulp+fiction
 
-
-
 $(function() {
 
 // var wikiLink = ""
@@ -45,15 +43,13 @@ $('form').submit(function(event) {
 //     if (wikiString[0] === "/") {
 //         newString = wikiString.substring(1);
 //     }
-//     else { 
+//     else {
 //         newString = wikiString;
 //     }
 //     console.log(newString);
 
 //     // printToPage(response, wikiImage);
-
 // }
-
 
  function printToPage(response) {
     $('.thumbnails .row').empty();
@@ -62,5 +58,4 @@ $('form').submit(function(event) {
       // append wikiThumbnails into src
     });
   }
-
 });
