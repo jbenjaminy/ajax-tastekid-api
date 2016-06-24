@@ -1,13 +1,15 @@
 $(function() {
 
-
+    // EVENT LISTENER FUNCTION
     $('form').submit(function(event) {
         event.preventDefault();
+        $('.thumbnails .row').empty();
         var userInput = $('#tastekid').val();
         bookSearch(userInput);
         $('form')[0].reset();
     });
 
+    // TASTEKID API CALL
     function bookSearch(userInput) {
         $.ajax({
                 method: "GET",
@@ -15,7 +17,7 @@ $(function() {
                 dataType: "jsonp",
                 data: {
                     q: userInput,
-                    type: "books",
+                    type: "books", 
                     k: "229060-APIProj-SGUZVY4W",
                     info: 1
                 }
@@ -24,92 +26,81 @@ $(function() {
                 getWikiString(bookResponse);
             });
     }
-
+    // EXTRACTS WIKI PAGE NAME FROM WIKI URL
     function getWikiString(bookResponse) {
-        var wikiImages = [],
-                wikiTitles = [];
 
         $.each(bookResponse.Similar.Results, function(index, value) {
-            // console.log(value.wUrl);
+            var wikiUrl = value.wUrl;
             var wikiString = value.wUrl.substring(value.wUrl.indexOf("wiki/"));
             wikiString = wikiString.substring(5);
-            // console.log(wikiString, '<--wikiString');
-            wikiApiCall(wikiString);
-            console.log(wikiImages);
-                console.log(wikiTitles);
-                // printToPage(wikiImages, wikiTitles); // wikiImage);p
+
+            wikiApiCall(wikiString, wikiUrl);
         });
 
-        function wikiApiCall(wikiString) {
+        // FIRST WIKI API CALL
+        function wikiApiCall(wikiString, wikiUrl) {
             $.ajax({
                     method: "GET",
                     url: "https://en.wikipedia.org/w/api.php?",
-                    dataType: "jsonp", //changed from 'format: jsonp'
-                    jsonp: "callback", //declared callback
+                    dataType: "jsonp",
+                    jsonp: "callback",
                     data: {
                         action: "query",
                         titles: wikiString,
-                        format: "json", //added to data params
+                        format: "json",
                         prop: "images"
-                        // piprop: "original"
-                        // //pithumbsize: "100"
                     }
                 })
                 .done(function(wikiResponse) {
-                    var key, wikiID, wikiImage;
-                    console.log(wikiResponse, '<-- wikiResponse');
+                    var key, wikiID, wikiImage, wikiTitle;
                     wikiID = wikiResponse.query.pages;
-                    console.log(wikiID);
-                    //wikiID -> Object and we need the first key
+                    // EXTRACTS WIKI IMAGE FILENAME, FILTERS OUT RESULTS WITH NO IMAGE
                     for(key in wikiID) {
-                        wikiImage = wikiID[key].images[0].title;
-                        break;
+                        if (wikiID[key].images !== undefined) {
+                            wikiImage = wikiID[key].images[0].title;
+                            wikiTitle = wikiID[key].title
+                         wikiImageCall(wikiImage, wikiUrl, wikiTitle);
+
+                         break;
+                        }
                     }
-                    // console.log(wikiID, '<--wikiID');
-                    // var wikiImage =  wikiID.images[0];
-                    // console.log(wikiImage, '<--wikiImage');
-                    wikiImageCall(wikiImage); //, wikiImage);
+                     
+                
                 });
         }
-        function wikiImageCall(wikiImageTitle) {
+        // SECOND WIKI API CALL FOR IMAGE FILENAME
+        function wikiImageCall(wikiImage, wikiUrl, wikiTitle) {
             $.ajax({
                 method: "GET",
                 url: "https://en.wikipedia.org/w/api.php?",
-                dataType: "jsonp", //changed from 'format: jsonp'
-                jsonp: "callback", //declared callback
+                dataType: "jsonp",
+                jsonp: "callback",
                 data: {
                     action: "query",
-                    titles: wikiImageTitle,
+                    titles: wikiImage,
                     prop: "imageinfo",
                     iiprop: "url",
-                    format: "json" //added to data params
-                    // piprop: "original"
-                    // //pithumbsize: "100"
+                    format: "json"
                 }
             })
+            // EXTRACTS IMAGE URL AND BOOK TITLE
             .done(function(wikiResponse) {
-                var key, wikiID;
-                // console.log(wikiResponse, '<-- wikiResponse');
+                var key, wikiID, wikiImages;
                 wikiID = wikiResponse.query.pages;
-                //wikiID -> Object and we need the first key
-                console.log('wikiID-------------',wikiID);
                 for(key in wikiID) {
-                    wikiImages.push(wikiID[key].imageinfo[0].url);
-                    wikiTitles.push(wikiID[key].imageinfo.title);
-                    // break;
+                    wikiImages = wikiID[key].imageinfo[0].url;
+                    break;
                 }
-
+                // FILTERS OUT FILETYPES OTHER THAN JPG/JPEG TO IMPROVE RESULTS QUALITY
+                if ((/\.(jpg|jpeg)$/i).test(wikiImages)) {
+                printToPage(wikiImages, wikiTitle, wikiUrl);
+                }
             });
         }
 
-        function printToPage(wikiImages, wikiTitles) {
-            $('.thumbnails .row').empty();
-            console.log(wikiImages);
-            $.each(wikiImages, function(index, value) {
-                $('.thumbnails .row').append('<div class="col-xs-6 col-md-3"><a href="' + value.wUrl + '" class="thumbnail"><img src="'+ wikiImages[index] + '" alt="' + wikiTitles[index] + '"></a></div>');
-                // append wikiThumbnails into src
-                // console.log(value.wUrl, '<--value.wUrl')
-            });
+        // PRINTS RESULTS TO THUMBNAILS
+        function printToPage(wikiImages, wikiTitle, wikiUrl) {
+                $('.thumbnails .row').append('<div class="col-xs-6 col-md-3"><a href="' + wikiUrl + '" class="thumbnail"><img src="'+ wikiImages + '" alt="' + wikiTitle + '"></a>' + wikiTitle + '</div>');
         }
     }
 
