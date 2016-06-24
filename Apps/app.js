@@ -28,9 +28,10 @@ $(function() {
 
     function getWikiString(bookResponse) {
         $.each(bookResponse.Similar.Results, function(index, value) {
+            // console.log(value.wUrl);
             var wikiString = value.wUrl.substring(value.wUrl.indexOf("wiki/"));
             wikiString = wikiString.substring(5);
-            console.log(wikiString, '<--wikiString');
+            // console.log(wikiString, '<--wikiString');
 
             wikiApiCall(bookResponse, wikiString);
         });
@@ -44,17 +45,21 @@ $(function() {
                     data: {
                         action: "query",
                         titles: wikiString,
-                        format: "json" //added to data params
+                        format: "json", //added to data params
+                        prop: "images"
                     }
                 })
                 .done(function(wikiResponse) {
-                    console.log(wikiResponse, '<-- wikiResponse');
-
-                    printToPage(bookResponse); //, wikiImage);
+                    // console.log(wikiResponse, '<-- wikiResponse');
+                    var wikiID = wikiResponse.query.pages;
+                    console.log(wikiID);
+                    var wikiImage = wikiResponse.query.pages.wikiID.images[0];
+                    console.log(wikiImage);
+                    printToPage(bookResponse, wikiResponse); //, wikiImage);
                 });
         }
 
-        function printToPage(response) {
+        function printToPage(bookResponse, wikiResponse) {
             $('.thumbnails .row').empty();
 
             $.each(response.Similar.Results, function(index, value) {
@@ -64,4 +69,5 @@ $(function() {
             });
         }
     }
+
 });
