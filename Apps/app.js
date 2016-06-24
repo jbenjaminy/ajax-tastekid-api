@@ -56,6 +56,7 @@ $('form').submit(function(event) {
     $.each(response.Similar.Results, function(index, value) {
       $('.thumbnails .row').append('<div class="col-xs-6 col-md-3"><a href="' + value.wUrl + '" class="thumbnail"><img src="" alt="' + value.Name + '"></a></div>');
       // append wikiThumbnails into src
+      console.log(response.Similar, '<--response')
     });
   }
 });
