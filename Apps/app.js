@@ -17,7 +17,7 @@ $(function() {
                 dataType: "jsonp",
                 data: {
                     q: userInput,
-                    type: "books", 
+                    type: "books",
                     k: "229060-APIProj-SGUZVY4W",
                     info: 1
                 }
@@ -64,8 +64,8 @@ $(function() {
                          break;
                         }
                     }
-                     
-                
+
+
                 });
         }
         // SECOND WIKI API CALL FOR IMAGE FILENAME
@@ -100,7 +100,7 @@ $(function() {
 
         // PRINTS RESULTS TO THUMBNAILS
         function printToPage(wikiImages, wikiTitle, wikiUrl) {
-                $('.thumbnails .row').append('<div class="col-xs-6 col-md-3"><a href="' + wikiUrl + '" class="thumbnail"><img src="'+ wikiImages + '" alt="' + wikiTitle + '"></a>' + wikiTitle + '</div>');
+                $('.thumbnails .row').append('<div class="col-xs-6 col-md-3"><a href="' + wikiUrl + '" class="thumbnail"><img src="'+ wikiImages + '" alt="' + wikiTitle + '" class="img-rounded" width=200 height=200></a>' + wikiTitle + '</div>' + '<br>');
         }
     }
 
