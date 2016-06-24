@@ -1,0 +1,27 @@
+.header {
+
+    background-image: url('../Images/books2.jpg');
+    background-position: 0 bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: auto;
+    height: 80rem;
+    text-align: center;
+    margin: 1em auto 0em;
+    padding: 5em auto 1em;
+    color: white;
+}
+
+.header h1 {
+    padding: 0.9em;
+}
+
+.header h3 {
+    padding: 50em auto;
+
+}
+
+.input-group {
+    text-align: center;
+    margin: -10em auto 2em ;
+}
