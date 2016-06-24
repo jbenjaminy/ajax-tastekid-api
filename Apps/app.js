@@ -32,7 +32,7 @@ function getWikiString(bookResponse) {
         wikiString = wikiString.substring(5);
         console.log(wikiString);
 
-        wikiApiCall(bookResponse, wikiString) 
+        wikiApiCall(bookResponse, wikiString)
     }
 )}
 
@@ -40,30 +40,32 @@ function wikiApiCall(bookResponse, wikiString) {
         $.ajax({
             method: "GET",
             url: "https://en.wikipedia.org/w/api.php?",
-            format: "json",
+            dataType: "jsonp",  //changed from 'format: jsonp'
+            jsonp: "callback",  //declared callback
             data: {
                 action: "query",
-                titles: wikiString  
+                titles: wikiString,
+                format: "json"  //added to data params
             }
         })
         .done(function(wikiResponse){
             console.log(wikiResponse)
 
-        // printToPage(bookResponse, wikiImage);
+        printToPage(bookResponse) //, wikiImage);
 
         });
 
 
 
-    }      
+    }
 
- // function printToPage(response) {
- //    $('.thumbnails .row').empty();
+ function printToPage(response) {
+    $('.thumbnails .row').empty();
 
- //    $.each(response.Similar.Results, function(index, value) {
- //      $('.thumbnails .row').append('<div class="col-xs-6 col-md-3"><a href="' + value.wUrl + '" class="thumbnail"><img src="" alt="' + value.Name + '"></a></div>');
- //      // append wikiThumbnails into src
- //    });
- //  }
+    $.each(response.Similar.Results, function(index, value) {
+      $('.thumbnails .row').append('<div class="col-xs-6 col-md-3"><a href="' + value.wUrl + '" class="thumbnail"><img src="" alt="' + value.Name + '"></a></div>');
+      // append wikiThumbnails into src
+    });
+  }
 
 });
