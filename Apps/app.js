@@ -32,9 +32,8 @@ function getWikiString(bookResponse) {
         wikiString = wikiString.substring(5);
         console.log(wikiString);
 
-        wikiApiCall(bookResponse, wikiString) 
-    }
-)}
+        wikiApiCall(bookResponse, wikiString);
+    });
 
 function wikiApiCall(bookResponse, wikiString) {
         $.ajax({
@@ -43,19 +42,16 @@ function wikiApiCall(bookResponse, wikiString) {
             format: "json",
             data: {
                 action: "query",
-                titles: wikiString  
+                titles: wikiString
             }
         })
         .done(function(wikiResponse){
-            console.log(wikiResponse)
+            console.log(wikiResponse);
 
         // printToPage(bookResponse, wikiImage);
 
         });
-
-
-
-    }      
+    }
 
  // function printToPage(response) {
  //    $('.thumbnails .row').empty();
@@ -65,5 +61,7 @@ function wikiApiCall(bookResponse, wikiString) {
  //      // append wikiThumbnails into src
  //    });
  //  }
-
+    }
 });
+
+
