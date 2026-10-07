@@ -1,5 +1,7 @@
 $(function() {
 
+    var tastekidApiKey = (window.APP_CONFIG && window.APP_CONFIG.TASTEKID_API_KEY) || 'YOUR_TASTEKID_API_KEY';
+
     // EVENT LISTENER FUNCTION
     $('form').submit(function(event) {
         event.preventDefault();
@@ -18,7 +20,7 @@ $(function() {
                 data: {
                     q: userInput,
                     type: "books",
-                    k: "229060-APIProj-SGUZVY4W",
+                    k: tastekidApiKey,
                     info: 1
                 }
             })
